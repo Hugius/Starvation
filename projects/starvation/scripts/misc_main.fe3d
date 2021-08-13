@@ -1,0 +1,64 @@
+28 27
+META script_type_update
+META script_execution_waiting
+
+/// Values
+BOOL ePressed = fe3d:input_is_key_pressed("KEY_E")
+BOOL pPressed = fe3d:input_is_key_pressed("KEY_P")
+BOOL qPressed = fe3d:input_is_key_pressed("KEY_Q")
+BOOL a = (_isToolPlaying IS <false> AND _isPickupPlaying IS <false>)
+BOOL b = (_isTalking IS <false> AND _isCrafting IS <false>)
+BOOL c = (_isSleeping IS <false> AND _isInStorage IS <false>)
+BOOL d = (_isEating IS <false>)
+EDIT _isAbleToMove = (a IS <true> AND b IS <true> AND c IS <true> AND d IS <true>)
+
+/// Check if player is allowed to quit
+EDIT a = (_isBuilding IS <false> AND _isUnderwater IS <false>)
+EDIT b = (_isToolPlaying IS <false> AND _isPickupPlaying IS <false>)
+EDIT c = (_isTalking IS <false> AND _isCrafting IS <false> AND _isOnFire IS <false>)
+EDIT d = (_isSleeping IS <false> AND _isInStorage IS <false>)
+EDIT _isAllowedToQuit = (a IS <true> AND b IS <true> AND c IS <true> AND d IS <true>)
+
+/// Check if player wants to quit
+IF qPressed IS <true> AND _isAllowedToQuit IS <true>:
+    fe3d:game_stop()
+
+/// Update pause toggle
+EDIT _wasPaused = _isPaused
+IF pPressed IS <true>:
+    IF _isPaused IS <true>:
+        fe3d:game_unpause()
+        fe3d:cursor_center()
+        fe3d:cursor_hide()
+        EDIT _isPaused = <false>
+    ELSE:
+        fe3d:game_pause()
+        fe3d:cursor_show()
+        EDIT _isPaused = <true>
+
+/// Update pause menu GUI
+IF _wasPaused NOT _isPaused OR _survivalTime IS 0:
+    fe3d:image_set_visible("scroll_pause", _isPaused)
+    fe3d:text_set_visible("title_pause", _isPaused)
+
+/// Update other miscellaneous stuff
+IF _isPaused IS <false>:
+    /// Toggle camera movement
+    IF _isAbleToMove IS <true>:
+        fe3d:camera_enable_first_person_view()
+    ELSE:
+        fe3d:camera_disable_first_person_view()
+    /// Centering cursor
+    IF _isPickupPlaying IS <true> OR _isToolPlaying IS <true>:
+        fe3d:cursor_center()
+    /// Update black overlay
+    IF _blackAlpha LESS _targetBlackAlpha:
+        INCR _blackAlpha _blackOverlaySpeed
+    ELSE:
+        DECR _blackAlpha _blackOverlaySpeed
+    fe3d:image_set_alpha("black", _blackAlpha)
+    /// Update crosshair visiblity
+    IF _isCrafting IS <true> OR _isBuilding IS <true> OR _isInStorage IS <true>:
+        fe3d:image_set_visible("crosshair", <false>)
+    ELSE:
+        fe3d:image_set_visible("crosshair", <true>)

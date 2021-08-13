@@ -1,0 +1,10 @@
+binaries/
+engine_assets/
+projects/starvation/saves/menu.txt
+projects/starvation/saves/buildings.txt
+projects/starvation/saves/bag.txt
+projects/starvation/saves/inventory.txt
+projects/starvation/saves/miscellaneous.txt
+projects/starvation/saves/player.txt
+projects/starvation/saves/storage.txt
+projects/starvation/scenes/custom/starvia.fe3d

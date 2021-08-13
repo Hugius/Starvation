@@ -1,0 +1,43 @@
+11 28
+META script_type_update
+META script_execution_waiting
+
+/// Update bed hover
+fe3d:text_set_visible("sleep", <false>)
+STR hoveredID = fe3d:raycast_into_model("bed", "", <true>)
+IF hoveredID NOT "" AND _isBuilding IS <false>:
+    DEC bedDistance = fe3d:raycast_into_model_distance("bed", "", <true>)
+    IF bedDistance IS -1.0:
+        EDIT bedDistance = 1000.0
+    /// If nighttime & looking at bed
+    IF bedDistance LESS _useReach AND _isDaytime IS <false> AND _isSleeping IS <false>:
+        fe3d:text_set_visible("sleep", <true>)
+        BOOL ePressed = fe3d:input_is_key_pressed("KEY_E")
+        /// Cycle to day goes faster
+        IF ePressed IS <true>:
+            EDIT _timeMultiplier = _sleepTimeMultiplier
+            EDIT _targetBlackAlpha = 1.0
+            EDIT _isSleeping = <true>
+            EDIT _passedTime = _maxPassedTime
+            INCR _passedTime 1.0
+
+/// Update sleeping process
+IF _isSleeping IS <true>:
+    IF _isDaytime IS <true>:
+        EDIT _timeMultiplier = 1.0
+        EDIT _targetBlackAlpha = 0.0
+        EDIT _isSleeping = <false>
+
+/// Update ambient & wind sounds
+DEC reverseMixValue = 1.0
+DECR reverseMixValue _skyMixValue
+IF _isUnderwater IS <true>:
+    fe3d:sound_set_volume("ambience_day", 0.0)
+    fe3d:sound_set_volume("wind_day", 0.0)
+    fe3d:sound_set_volume("ambience_night", 0.0)
+    fe3d:sound_set_volume("wind_night", 0.0)
+ELSE:
+    fe3d:sound_set_volume("ambience_day", reverseMixValue)
+    fe3d:sound_set_volume("wind_day", reverseMixValue)
+    fe3d:sound_set_volume("ambience_night", _skyMixValue)
+    fe3d:sound_set_volume("wind_night", _skyMixValue)

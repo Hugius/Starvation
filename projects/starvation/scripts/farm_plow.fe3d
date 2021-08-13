@@ -1,0 +1,73 @@
+18 3
+META script_type_update
+META script_execution_waiting
+
+/// Values
+STR toolID = _inventory[_equipIndex]
+STR wheatAabbID = ""
+VEC3 camPos = fe3d:camera_get_position()
+VEC3 wheatSize = [0.0 0.0 0.0]
+DEC wheatHeight = 0.0
+DEC pitch = fe3d:camera_get_pitch()
+DEC feetY = fe3d:terrain_get_pixel_height(camPos.x, camPos.z)
+DEC waterY = fe3d:water_get_height()
+BOOL isLookingDown = <false>
+INT leastWheatCount = _wheatCount
+DECR leastWheatCount 1
+
+/// Update plowing hover
+fe3d:text_set_visible("plow", <false>)
+STR anyHovered = fe3d:raycast_into_models()
+IF anyHovered IS "":
+    IF feetY MORE waterY AND camPos.y LESS 34.0 AND pitch LESS -25.0:
+        IF toolID IS "hoe" AND _isInvOpen IS <true> AND _bag[3] MORE leastWheatCount:
+            fe3d:text_set_visible("plow", <true>)
+            EDIT isLookingDown = <true>
+
+/// Update wheat plowing
+IF _wasHoePlaying IS <true> AND _isHoePlaying IS <false>:
+    IF isLookingDown IS <true>:
+        /// Compose ID of wheat model
+        CAST _idCounter STR
+        STR newID = misc:concat_strings("wheat", _idCounter)
+        CAST _idCounter INT
+        INCR _idCounter 1
+        /// Place "seeds" of wheat model
+        fe3d:model_place(newID, "wheat", camPos.x, feetY, camPos.z)
+        fe3d:model_set_aabb_collision_responsive(newID, <false>)
+        STR aabbID = misc:concat_strings(newID, "@wheat")
+        VEC3 size = fe3d:aabb_get_size(aabbID)
+        MUL size.y 0.025
+        fe3d:model_set_max_height(newID, size.y)
+        /// Plant the seeds
+        DECR _bag[3] _wheatCount
+
+/// Update wheat growing
+LIST wheatIDs = fe3d:model_find_ids("wheat")
+STR wheatID = ""
+DEC speed = 0.0
+INT maxIndex = misc:get_list_size("wheatIDs")
+INT index = 0
+LOOP:
+    IF index IS maxIndex:
+        BREAK
+    ELSE:
+        EDIT wheatID = wheatIDs[index]
+        EDIT wheatAabbID = misc:concat_strings(wheatID, "@wheat")
+        EDIT wheatSize = fe3d:aabb_get_size(wheatAabbID)
+        EDIT wheatHeight = fe3d:model_get_max_height(wheatID)
+        /// Check if wheat is not fully grown yet
+        IF wheatHeight LESS wheatSize.y:
+            EDIT speed = _wheatGrowingSpeed
+            MUL speed _timeMultiplier
+            INCR wheatHeight speed
+            /// Grow the wheat
+            fe3d:model_set_max_height(wheatID, wheatHeight)
+        INCR index 1
+
+/// Update hoe sound
+BOOL isSoundPlaying = fe3d:sound_is_playing("hoe")
+IF isLookingDown IS <true> AND _isHoePlaying IS <true> AND isSoundPlaying IS <false>:
+    INT frameIndex = fe3d:model_get_animation_frame_index(toolID, "hoe_plow")
+    IF frameIndex IS 3:
+        fe3d:sound_play("hoe", 0, 0)

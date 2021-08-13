@@ -1,0 +1,86 @@
+50 67
+META script_type_update
+META script_execution_waiting
+
+/// Determine finished model & add final properties
+IF _finishedBuildingID NOT "":
+    STR ID = _finishedBuildingID
+    STR idPart = misc:get_string_part(ID, 0, 3)
+    VEC3 pos = fe3d:model_get_position(ID)
+    VEC3 rot = fe3d:model_get_rotation(ID)
+    IF idPart IS "sma" OR idPart IS "med" OR idPart IS "big":
+        STR bedID = misc:concat_strings("bed:", ID)
+        fe3d:model_place(bedID, "bed", pos.x, pos.y, pos.z)
+        fe3d:model_set_rotation(bedID, 0.0, rot.y, 0.0)
+    ELIF idPart IS "mil":
+        fe3d:model_start_animation(ID, "mill_rotation", -1)
+        fe3d:sound_place3D(ID, "mill", pos.x, pos.y, pos.z, 1.0, 25.0)
+        fe3d:sound_play(ID, -1, 0)
+    ELIF idPart IS "ove":
+        STR flameID = misc:concat_strings("flame:", ID)
+        INCR pos.y 0.5
+        INCR rot.y 90.0
+        fe3d:billboard_place(flameID, "fire2", pos.x, pos.y, pos.z)
+        fe3d:billboard_start_animation(flameID, -1)
+        fe3d:billboard_set_aabb_raycast_responsive(flameID, <false>)
+        fe3d:billboard_set_aabb_collision_responsive(flameID, <false>)
+        fe3d:billboard_set_rotation(flameID, 0.0, rot.y, 0.0)
+        fe3d:billboard_set_size(flameID, 4.2, 4.5)
+        STR smokeID = misc:concat_strings("smoke:", ID)
+        INCR pos.y 3.0
+        fe3d:billboard_place(smokeID, "smoke", pos.x, pos.y, pos.z)
+        fe3d:billboard_start_animation(smokeID, -1)
+        fe3d:billboard_set_aabb_raycast_responsive(smokeID, <false>)
+        fe3d:billboard_set_aabb_collision_responsive(smokeID, <false>)
+        DECR pos.y 2.5
+        fe3d:light_place(ID, pos.x, pos.y, pos.z, 1.0, 0.85, 0.0, 2.5, 0.25)
+        fe3d:sound_place3D(ID, "flame", pos.x, pos.y, pos.z, 0.75, 10.0)
+        fe3d:sound_play(ID, -1, 0)
+    ELIF idPart IS "cam":
+        STR firstFireID = misc:concat_strings("fire_1:", ID)
+        STR secondFireID = misc:concat_strings("fire_2:", ID)
+        fe3d:billboard_place(firstFireID, "fire3", pos.x, pos.y, pos.z)
+        fe3d:billboard_place(secondFireID, "fire3", pos.x, pos.y, pos.z)
+        fe3d:billboard_set_rotation(firstFireID, 0.0, 0.0, 0.0)
+        fe3d:billboard_set_rotation(secondFireID, 0.0, 90.0, 0.0)
+        fe3d:billboard_set_aabb_collision_responsive(firstFireID, <false>)
+        fe3d:billboard_set_aabb_collision_responsive(secondFireID, <false>)
+        fe3d:billboard_start_animation(firstFireID, -1)
+        fe3d:billboard_start_animation(secondFireID, -1)
+        INCR pos.y 3.0
+        fe3d:light_place(ID, pos.x, pos.y, pos.z, 1.0, 0.85, 0.0, 2.0, 2.0)
+        fe3d:sound_place3D(ID, "campfire", pos.x, pos.y, pos.z, 1.0, 15.0)
+        fe3d:sound_play(ID, -1, 0)
+    ELIF idPart IS "tab":
+        INCR pos.y 1.7
+        fe3d:model_place("bread:table", "bread", pos.x, pos.y, pos.z)
+        IF rot.y IS 0.0 OR rot.y IS 180.0:
+            DECR pos.z 1.35
+        ELSE:
+            DECR pos.x 1.35
+        fe3d:model_place("fish:table", "fish", pos.x, pos.y, pos.z)
+        IF rot.y IS 0.0 OR rot.y IS 180.0:
+            INCR pos.z 2.7
+        ELSE:
+            INCR pos.x 2.7
+        fe3d:model_place("meat:table", "meat", pos.x, pos.y, pos.z)
+    ELIF idPart IS "sme":
+        STR flameID = misc:concat_strings("flame:", ID)
+        INCR pos.y 0.5
+        INCR rot.y 90.0
+        fe3d:billboard_place(flameID, "fire2", pos.x, pos.y, pos.z)
+        fe3d:billboard_start_animation(flameID, -1)
+        fe3d:billboard_set_aabb_raycast_responsive(flameID, <false>)
+        fe3d:billboard_set_aabb_collision_responsive(flameID, <false>)
+        fe3d:billboard_set_rotation(flameID, 0.0, rot.y, 0.0)
+        INCR pos.y 10.0
+        STR smokeID = misc:concat_strings("smoke:", ID)
+        fe3d:billboard_place(smokeID, "smoke", pos.x, pos.y, pos.z)
+        fe3d:billboard_start_animation(smokeID, -1)
+        fe3d:billboard_set_aabb_raycast_responsive(smokeID, <false>)
+        fe3d:billboard_set_aabb_collision_responsive(smokeID, <false>)
+        DECR pos.y 9.0
+        fe3d:light_place(ID, pos.x, pos.y, pos.z, 1.0, 0.85, 0.0, 2.5, 0.25)
+        fe3d:sound_place3D(ID, "flame", pos.x, pos.y, pos.z, 0.75, 10.0)
+        fe3d:sound_play(ID, -1, 0)
+    EDIT _finishedBuildingID = ""

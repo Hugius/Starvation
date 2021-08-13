@@ -1,0 +1,100 @@
+3 11
+META script_type_update
+META script_execution_waiting
+
+/// Globals
+GLOB CONST DEC _maxWorkbenchReach = 4.0
+GLOB BOOL _isCrafting = <false>
+GLOB BOOL _wasCrafting = <false>
+GLOB INT _craftIndex = 0
+GLOB LIST _toolTypes = {}
+GLOB LIST _toolTypesText = {}
+GLOB LIST _toolTypesIndex = {0,0,1,1,2,2,3,3,4,5,6,6,7,8}
+GLOB LIST _toolTypesWoodPrice = {2,2,2,2,2,2,2,2,2,3,2,2,2,3}
+GLOB LIST _toolTypesStonePrice = {3,0,3,0,3,0,1,0,0,0,2,0,0,0}
+GLOB LIST _toolTypesIronPrice = {0,3,0,3,0,3,0,1,1,3,0,2,0,0}
+
+/// Craftables
+PUSH _toolTypes "sword_stone_display"
+PUSH _toolTypes "sword_iron_display"
+PUSH _toolTypes "pickaxe_stone_display"
+PUSH _toolTypes "pickaxe_iron_display"
+PUSH _toolTypes "axe_stone_display"
+PUSH _toolTypes "axe_iron_display"
+PUSH _toolTypes "shovel_stone_display"
+PUSH _toolTypes "shovel_iron_display"
+PUSH _toolTypes "hoe_display"
+PUSH _toolTypes "scythe_display"
+PUSH _toolTypes "hammer_stone_display"
+PUSH _toolTypes "hammer_iron_display"
+PUSH _toolTypes "torch_display"
+PUSH _toolTypes "rod_display"
+
+/// Models
+fe3d:model_place("workbench", "workbench", 17.0, 4.75, 114.0)
+fe3d:model_set_rotation("workbench", 0.0, 90.0, 0.0)
+fe3d:model_place("sword_stone_display", "sword_stone", 18.5, 6.5, 114.0)
+fe3d:model_place("sword_iron_display", "sword_iron", 18.5, 6.5, 114.0)
+fe3d:model_place("pickaxe_stone_display", "pickaxe_stone", 18.5, 6.5, 114.0)
+fe3d:model_place("pickaxe_iron_display", "pickaxe_iron", 18.5, 6.5, 114.0)
+fe3d:model_place("axe_stone_display", "axe_stone", 18.5, 6.5, 114.0)
+fe3d:model_place("axe_iron_display", "axe_iron", 18.5, 6.5, 114.0)
+fe3d:model_place("shovel_stone_display", "shovel_stone", 16.75, 6.5, 114.0)
+fe3d:model_place("shovel_iron_display", "shovel_iron", 16.75, 6.5, 114.0)
+fe3d:model_place("hoe_display", "hoe", 18.5, 6.5, 114.0)
+fe3d:model_place("scythe_display", "scythe", 18.5, 6.5, 114.0)
+fe3d:model_place("hammer_stone_display", "hammer_stone", 18.5, 6.55, 114.0)
+fe3d:model_place("hammer_iron_display", "hammer_iron", 18.5, 6.525, 114.0)
+fe3d:model_place("torch_display", "torch", 18.5, 6.5, 114.0)
+fe3d:model_place("rod_display", "rod", 18.5, 6.5, 114.0)
+fe3d:model_set_rotation("sword_stone_display", 90.0, 0.0, 0.0)
+fe3d:model_set_rotation("sword_iron_display", 90.0, 0.0, 0.0)
+fe3d:model_set_rotation("pickaxe_stone_display", 90.0, 0.0, 0.0)
+fe3d:model_set_rotation("pickaxe_iron_display", 90.0, 0.0, 0.0)
+fe3d:model_set_rotation("axe_stone_display", -90.0, 0.0, 180.0)
+fe3d:model_set_rotation("axe_iron_display", -90.0, 0.0, 180.0)
+fe3d:model_set_rotation("shovel_stone_display", 180.0, 90.0, 90.0)
+fe3d:model_set_rotation("shovel_iron_display", 180.0, 90.0, 90.0)
+fe3d:model_set_rotation("hoe_display", -90.0, -90.0, 90.0)
+fe3d:model_set_rotation("scythe_display", -90.0, -90.0, 90.0)
+fe3d:model_set_rotation("hammer_stone_display", -90.0, 0.0, 180.0)
+fe3d:model_set_rotation("hammer_iron_display", -90.0, 0.0, 180.0)
+fe3d:model_set_rotation("torch_display", -90.0, -90.0, 90.0)
+fe3d:model_set_rotation("rod_display", -90.0, -90.0, 90.0)
+fe3d:model_set_visible("sword_stone_display", <false>)
+fe3d:model_set_visible("sword_iron_display", <false>)
+fe3d:model_set_visible("pickaxe_stone_display", <false>)
+fe3d:model_set_visible("pickaxe_iron_display", <false>)
+fe3d:model_set_visible("axe_stone_display", <false>)
+fe3d:model_set_visible("axe_iron_display", <false>)
+fe3d:model_set_visible("shovel_stone_display", <false>)
+fe3d:model_set_visible("shovel_iron_display", <false>)
+fe3d:model_set_visible("hoe_display", <false>)
+fe3d:model_set_visible("scythe_display", <false>)
+fe3d:model_set_visible("hammer_stone_display", <false>)
+fe3d:model_set_visible("hammer_iron_display", <false>)
+fe3d:model_set_visible("torch_display", <false>)
+fe3d:model_set_visible("rod_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("sword_stone_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("sword_iron_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("pickaxe_stone_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("pickaxe_iron_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("axe_stone_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("axe_iron_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("shovel_stone_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("shovel_iron_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("hoe_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("scythe_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("hammer_stone_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("hammer_iron_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("torch_display", <false>)
+fe3d:model_set_aabb_raycast_responsive("rod_display", <false>)
+
+/// Billboards
+fe3d:billboard_place("craft_confirm", "craft", 18.0, 6.75, 114.0)
+fe3d:billboard_place("craft_cancel", "cancel", 16.0, 6.75, 114.0)
+fe3d:billboard_set_visible("craft_confirm", <false>)
+fe3d:billboard_set_visible("craft_cancel", <false>)
+
+/// Sounds
+fe3d:sound_place2D("craft","craft", 0.75)

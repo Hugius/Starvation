@@ -1,0 +1,76 @@
+0 0
+META script_type_update
+META script_execution_waiting
+
+/// Text display content
+PUSH _toolTypesText "Stone sword"
+PUSH _toolTypesText "Iron sword"
+PUSH _toolTypesText "Stone pickaxe"
+PUSH _toolTypesText "Iron pickaxe"
+PUSH _toolTypesText "Stone axe"
+PUSH _toolTypesText "Iron axe"
+PUSH _toolTypesText "Stone shovel"
+PUSH _toolTypesText "Iron shovel"
+PUSH _toolTypesText "Hoe"
+PUSH _toolTypesText "Scythe"
+PUSH _toolTypesText "Stone hammer"
+PUSH _toolTypesText "Iron hammer"
+PUSH _toolTypesText "Torch"
+PUSH _toolTypesText "Fishing rod"
+
+/// Images
+fe3d:image_place("scroll_craft", "scroll3.png", 0.0, -0.55, 0.0, 0.75, 0.75)
+fe3d:image_place("wood_price_craft", "wood.png", -0.05, -0.45, 0.0, 0.1, 0.1)
+fe3d:image_place("stone_price_craft", "stone.png", -0.05, -0.6, 0.0, 0.1, 0.1)
+fe3d:image_place("iron_price_craft", "ingot.png", -0.05, -0.75, 0.0, 0.1, 0.1)
+
+/// Text
+STR f = "font.ttf"
+fe3d:text_place("wood_price_craft", f, "0", 0.05, -0.45, 0.0, 0.03, 0.05)
+fe3d:text_place("stone_price_craft", f, "0", 0.05, -0.6, 0.0, 0.03, 0.05)
+fe3d:text_place("iron_price_craft", f, "0", 0.05, -0.75, 0.0, 0.03, 0.05)
+fe3d:text_place(_toolTypes[0], f, _toolTypesText[0], 0.0, -0.35, 0.0, 0.33, 0.05)
+fe3d:text_place(_toolTypes[1], f, _toolTypesText[1], 0.0, -0.35, 0.0, 0.3, 0.05)
+fe3d:text_place(_toolTypes[2], f, _toolTypesText[2], 0.0, -0.35, 0.0, 0.39, 0.05)
+fe3d:text_place(_toolTypes[3], f, _toolTypesText[3], 0.0, -0.35, 0.0, 0.36, 0.05)
+fe3d:text_place(_toolTypes[4], f, _toolTypesText[4], 0.0, -0.33, 0.0, 0.27, 0.05)
+fe3d:text_place(_toolTypes[5], f, _toolTypesText[5], 0.0, -0.35, 0.0, 0.24, 0.05)
+fe3d:text_place(_toolTypes[6], f, _toolTypesText[6], 0.0, -0.35, 0.0, 0.36, 0.05)
+fe3d:text_place(_toolTypes[7], f, _toolTypesText[7], 0.0, -0.35, 0.0, 0.33, 0.05)
+fe3d:text_place(_toolTypes[8], f, _toolTypesText[8], 0.0, -0.35, 0.0, 0.09, 0.05)
+fe3d:text_place(_toolTypes[9], f, _toolTypesText[9], 0.0, -0.35, 0.0, 0.18, 0.05)
+fe3d:text_place(_toolTypes[10], f, _toolTypesText[10], 0.0, -0.35, 0.0, 0.36, 0.05)
+fe3d:text_place(_toolTypes[11], f, _toolTypesText[11], 0.0, -0.35, 0.0, 0.33, 0.05)
+fe3d:text_place(_toolTypes[12], f, _toolTypesText[12], 0.0, -0.35, 0.0, 0.15, 0.05)
+fe3d:text_place(_toolTypes[13], f, _toolTypesText[13], 0.0, -0.35, 0.0, 0.33, 0.05)
+fe3d:text_set_color("wood_price_craft", 0.0, 0.0, 0.0)
+fe3d:text_set_color("stone_price_craft", 0.0, 0.0, 0.0)
+fe3d:text_set_color("iron_price_craft", 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[0], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[1], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[2], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[3], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[4], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[5], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[6], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[7], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[8], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[9], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[10], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[11], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[12], 0.0, 0.0, 0.0)
+fe3d:text_set_color(_toolTypes[13], 0.0, 0.0, 0.0)
+fe3d:text_set_visible(_toolTypes[0], <false>)
+fe3d:text_set_visible(_toolTypes[1], <false>)
+fe3d:text_set_visible(_toolTypes[2], <false>)
+fe3d:text_set_visible(_toolTypes[3], <false>)
+fe3d:text_set_visible(_toolTypes[4], <false>)
+fe3d:text_set_visible(_toolTypes[5], <false>)
+fe3d:text_set_visible(_toolTypes[6], <false>)
+fe3d:text_set_visible(_toolTypes[7], <false>)
+fe3d:text_set_visible(_toolTypes[8], <false>)
+fe3d:text_set_visible(_toolTypes[9], <false>)
+fe3d:text_set_visible(_toolTypes[10], <false>)
+fe3d:text_set_visible(_toolTypes[11], <false>)
+fe3d:text_set_visible(_toolTypes[12], <false>)
+fe3d:text_set_visible(_toolTypes[13], <false>)

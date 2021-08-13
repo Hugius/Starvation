@@ -1,0 +1,96 @@
+88 27
+META script_type_init
+META script_execution_waiting
+
+/// Globals
+GLOB LIST _menuButtonIDs = {}
+GLOB STR _hoveredMenuButtonID = ""
+GLOB STR _graphicsQuality = "low"
+GLOB BOOL _isInMenu = <true>
+GLOB BOOL _isSoundEnabled = <true>
+GLOB BOOL _isMusicEnabled = <true>
+PUSH _menuButtonIDs "menu_newgame"
+PUSH _menuButtonIDs "menu_loadgame"
+PUSH _menuButtonIDs "menu_graphics"
+PUSH _menuButtonIDs "menu_sound"
+PUSH _menuButtonIDs "menu_music"
+PUSH _menuButtonIDs "menu_quit"
+
+/// Images
+fe3d:image_place("menu_background", "menu_background.png", 0.0, 0.0, 0.0, 2.5, 2.5)
+fe3d:image_place("menu_title", "menu_title.png", 0.0, 0.75, 0.0, 0.9, 0.45)
+fe3d:image_place("menu_newgame", "scroll3.png", -0.1, 0.4, 0.0, 0.5, 0.175)
+fe3d:image_place("menu_loadgame", "scroll3.png", 0.1, 0.15, 0.0, 0.5, 0.175)
+fe3d:image_place("menu_graphics", "scroll3.png", -0.1, -0.1, 0.0, 0.5, 0.175)
+fe3d:image_place("menu_sound", "scroll3.png", 0.1, -0.35, 0.0, 0.5, 0.175)
+fe3d:image_place("menu_music", "scroll3.png", -0.1, -0.6, 0.0, 0.5, 0.175)
+fe3d:image_place("menu_quit", "scroll3.png", 0.1, -0.85, 0.0, 0.5, 0.175)
+fe3d:image_set_mirrored_horizontally("menu_newgame", <true>)
+fe3d:image_set_mirrored_horizontally("menu_graphics", <true>)
+fe3d:image_set_mirrored_horizontally("menu_music", <true>)
+
+/// Text
+STR f = "font.ttf"
+fe3d:text_place("menu_newgame", f, "New game", -0.1, 0.4, 0.0, 0.28, 0.075)
+fe3d:text_place("menu_loadgame", f, "Load game", 0.1, 0.15, 0.0, 0.315, 0.075)
+fe3d:text_place("menu_graphics", f, "", -0.1, -0.1, 0.0, 0.0, 0.0)
+fe3d:text_place("menu_sound", f, "", 0.1, -0.35, 0.0, 0.0, 0.0)
+fe3d:text_place("menu_music", f, "", -0.1, -0.6, 0.0, 0.0, 0.0)
+fe3d:text_place("menu_quit", f, "Quit", 0.1, -0.85, 0.0, 0.14, 0.075)
+fe3d:text_set_color("menu_newgame", 0.0, 0.0, 0.0)
+fe3d:text_set_color("menu_loadgame", 0.0, 0.0, 0.0)
+fe3d:text_set_color("menu_graphics", 0.0, 0.0, 0.0)
+fe3d:text_set_color("menu_sound", 0.0, 0.0, 0.0)
+fe3d:text_set_color("menu_music", 0.0, 0.0, 0.0)
+fe3d:text_set_color("menu_quit", 0.0, 0.0, 0.0)
+
+/// Load menu settings
+LIST lines = fe3d:file_read("menu.txt")
+STR line = lines[0]
+EDIT _graphicsQuality = line
+EDIT line = lines[1]
+CAST line BOOL
+EDIT _isSoundEnabled = line
+CAST line STR
+EDIT line = lines[2]
+CAST line BOOL
+EDIT _isMusicEnabled = line
+
+/// Graphics
+IF _graphicsQuality IS "low":
+    fe3d:text_set_content("menu_graphics", "GFX:low")
+    fe3d:text_set_size("menu_graphics", 0.245, 0.075)
+ELIF _graphicsQuality IS "medium":
+    fe3d:text_set_content("menu_graphics", "GFX:medium")
+    fe3d:text_set_size("menu_graphics", 0.35, 0.075)
+ELSE:
+    fe3d:text_set_content("menu_graphics", "GFX:high")
+    fe3d:text_set_size("menu_graphics", 0.28, 0.075)
+
+/// Sound
+fe3d:sound_place2D("button", "button", 1.0)
+IF _isSoundEnabled IS <true>:
+    fe3d:text_set_content("menu_sound", "Sound:ON")
+    fe3d:text_set_size("menu_sound", 0.28, 0.075)
+ELSE:
+    fe3d:text_set_content("menu_sound", "Sound:OFF")
+    fe3d:text_set_size("menu_sound", 0.315, 0.075)
+
+/// Music
+fe3d:music_add_to_playlist("music1")
+fe3d:music_add_to_playlist("music2")
+fe3d:music_add_to_playlist("music3")
+fe3d:music_add_to_playlist("music4")
+fe3d:music_add_to_playlist("music5")
+fe3d:music_add_to_playlist("music6")
+fe3d:music_add_to_playlist("music7")
+fe3d:music_add_to_playlist("music8")
+fe3d:music_add_to_playlist("music9")
+fe3d:music_add_to_playlist("music10")
+fe3d:music_set_volume(0.25)
+IF _isMusicEnabled IS <true>:
+    fe3d:text_set_content("menu_music", "Music:ON")
+    fe3d:text_set_size("menu_music", 0.28, 0.075)
+ELSE:
+    fe3d:text_set_content("menu_music", "Music:OFF")
+    fe3d:text_set_size("menu_music", 0.315, 0.075)

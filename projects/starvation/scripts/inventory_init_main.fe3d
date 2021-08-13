@@ -1,0 +1,95 @@
+4 35
+META script_type_update
+META script_execution_waiting
+
+/// Globals
+GLOB CONST DEC _durabilityHit = 0.1
+GLOB LIST _inventory = { "", "", "", "", "", "", "", "", "" }
+GLOB LIST _durabilities = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
+GLOB INT _equipIndex = 0
+GLOB INT _lastEquipIndex = 0
+GLOB BOOL _isInvOpen = <true>
+GLOB BOOL _wasInvOpen = <true>
+GLOB BOOL _invMustClose = <false>
+
+/// Models
+fe3d:model_place("sword_stone", "sword_stone", 0.0, 0.0, 0.0)
+fe3d:model_place("sword_iron", "sword_iron", 0.0, 0.0, 0.0)
+fe3d:model_place("pickaxe_stone", "pickaxe_stone", 0.0, 0.0, 0.0)
+fe3d:model_place("pickaxe_iron", "pickaxe_iron", 0.0, 0.0, 0.0)
+fe3d:model_place("axe_stone", "axe_stone", 0.0, 0.0, 0.0)
+fe3d:model_place("axe_iron", "axe_iron", 0.0, 0.0, 0.0)
+fe3d:model_place("shovel_stone", "shovel_stone", 0.0, 0.0, 0.0)
+fe3d:model_place("shovel_iron", "shovel_iron", 0.0, 0.0, 0.0)
+fe3d:model_place("hoe", "hoe", 0.0, 0.0, 0.0)
+fe3d:model_place("scythe", "scythe", 0.0, 0.0, 0.0)
+fe3d:model_place("hammer_stone", "hammer_stone", 0.0, 0.0, 0.0)
+fe3d:model_place("hammer_iron", "hammer_iron", 0.0, 0.0, 0.0)
+fe3d:model_place("torch", "torch", 0.0, 0.0, 0.0)
+fe3d:model_place("rod", "rod", 0.0, 0.0, 0.0)
+fe3d:model_set_aabb_raycast_responsive("sword_stone", <false>)
+fe3d:model_set_aabb_raycast_responsive("sword_iron", <false>)
+fe3d:model_set_aabb_raycast_responsive("pickaxe_stone", <false>)
+fe3d:model_set_aabb_raycast_responsive("pickaxe_iron", <false>)
+fe3d:model_set_aabb_raycast_responsive("axe_stone", <false>)
+fe3d:model_set_aabb_raycast_responsive("axe_iron", <false>)
+fe3d:model_set_aabb_raycast_responsive("shovel_stone", <false>)
+fe3d:model_set_aabb_raycast_responsive("shovel_iron", <false>)
+fe3d:model_set_aabb_raycast_responsive("hoe", <false>)
+fe3d:model_set_aabb_raycast_responsive("scythe", <false>)
+fe3d:model_set_aabb_raycast_responsive("hammer_stone", <false>)
+fe3d:model_set_aabb_raycast_responsive("hammer_iron", <false>)
+fe3d:model_set_aabb_raycast_responsive("torch", <false>)
+fe3d:model_set_aabb_raycast_responsive("rod", <false>)
+fe3d:model_set_aabb_collision_responsive("sword_stone", <false>)
+fe3d:model_set_aabb_collision_responsive("sword_iron", <false>)
+fe3d:model_set_aabb_collision_responsive("pickaxe_stone", <false>)
+fe3d:model_set_aabb_collision_responsive("pickaxe_iron", <false>)
+fe3d:model_set_aabb_collision_responsive("axe_stone", <false>)
+fe3d:model_set_aabb_collision_responsive("axe_iron", <false>)
+fe3d:model_set_aabb_collision_responsive("shovel_stone", <false>)
+fe3d:model_set_aabb_collision_responsive("shovel_iron", <false>)
+fe3d:model_set_aabb_collision_responsive("hoe", <false>)
+fe3d:model_set_aabb_collision_responsive("scythe", <false>)
+fe3d:model_set_aabb_collision_responsive("hammer_stone", <false>)
+fe3d:model_set_aabb_collision_responsive("hammer_iron", <false>)
+fe3d:model_set_aabb_collision_responsive("torch", <false>)
+fe3d:model_set_aabb_collision_responsive("rod", <false>)
+fe3d:model_set_visible("sword_stone", <false>)
+fe3d:model_set_visible("sword_iron", <false>)
+fe3d:model_set_visible("pickaxe_stone", <false>)
+fe3d:model_set_visible("pickaxe_iron", <false>)
+fe3d:model_set_visible("axe_stone", <false>)
+fe3d:model_set_visible("axe_iron", <false>)
+fe3d:model_set_visible("shovel_stone", <false>)
+fe3d:model_set_visible("shovel_iron", <false>)
+fe3d:model_set_visible("hoe", <false>)
+fe3d:model_set_visible("scythe", <false>)
+fe3d:model_set_visible("hammer_stone", <false>)
+fe3d:model_set_visible("hammer_iron", <false>)
+fe3d:model_set_visible("torch", <false>)
+fe3d:model_set_visible("rod", <false>)
+
+/// Billboards
+fe3d:billboard_place("torch", "fire1", 0.0, 0.0, 0.0)
+fe3d:billboard_start_animation("torch", -1)
+fe3d:billboard_set_aabb_raycast_responsive("torch", <false>)
+fe3d:billboard_set_aabb_collision_responsive("torch", <false>)
+fe3d:billboard_set_size("torch", 1.75, 1.5)
+
+/// Lights
+fe3d:light_place("torch", 0.0, 0.0, 0.0, 1.0, 0.85, 0.0, 2.0, 1.0)
+
+/// Sounds
+fe3d:sound_place2D("tool", "tool", 0.75)
+fe3d:sound_place2D("sword", "sword", 0.75)
+fe3d:sound_place2D("pickaxe", "pickaxe", 0.75)
+fe3d:sound_place2D("axe", "axe", 0.75)
+fe3d:sound_place2D("shovel", "shovel", 0.75)
+fe3d:sound_place2D("hoe", "hoe", 0.75)
+fe3d:sound_place2D("scythe", "scythe", 1.0)
+fe3d:sound_place2D("hammer", "hammer", 0.75)
+fe3d:sound_place2D("torch", "torch", 0.75)
+fe3d:sound_place2D("rod", "rod", 0.75)
+fe3d:sound_place2D("break", "break", 1.0)
+fe3d:sound_play("torch", -1, 0)

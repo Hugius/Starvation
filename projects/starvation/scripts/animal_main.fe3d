@@ -1,0 +1,93 @@
+52 37
+META script_type_update
+META script_execution_waiting
+
+/// Values
+LIST cows = fe3d:model_find_ids("cow")
+LIST pigs = fe3d:model_find_ids("pig")
+LIST sheeps = fe3d:model_find_ids("sheep")
+LIST chickens = fe3d:model_find_ids("chicken")
+INT cowCount = misc:get_list_size("cows")
+INT pigCount = misc:get_list_size("pigs")
+INT sheepCount = misc:get_list_size("sheeps")
+INT chickenCount = misc:get_list_size("chickens")
+
+/// Update animal growth
+IF _animalGrowth LESS 1.0:
+    INCR _animalGrowth _animalGrowthFactor
+
+/// Cow growth
+IF cowCount MORE 0:
+    VEC3 cowSize = _cowSize
+    MUL cowSize _animalGrowth
+    fe3d:model_set_size(cows[0], cowSize.x, cowSize.y, cowSize.z)
+
+/// Pig growth
+IF pigCount MORE 0:
+    VEC3 pigSize = _pigSize
+    MUL pigSize _animalGrowth
+    fe3d:model_set_size(pigs[0], pigSize.x, pigSize.y, pigSize.z)
+
+/// Sheep growth
+IF sheepCount MORE 0:
+    VEC3 sheepSize = _sheepSize
+    MUL sheepSize _animalGrowth
+    fe3d:model_set_size(sheeps[0], sheepSize.x, sheepSize.y, sheepSize.z)
+
+/// Chicken growth
+IF chickenCount MORE 0:
+    VEC3 chickenSize = _chickenSize
+    MUL chickenSize _animalGrowth
+    fe3d:model_set_size(chickens[0], chickenSize.x, chickenSize.y, chickenSize.z)
+
+/// Cow sounds
+BOOL isCowPlaying = fe3d:sound_is_playing("cow_idle")
+IF cowCount MORE 0:
+    INT randomCowNumber = misc:get_random_integer(0, _animalSoundChance)
+    IF randomCowNumber IS 0:
+        IF isCowPlaying IS <false>:
+            VEC3 cowPos = fe3d:model_get_position(cows[0])
+            fe3d:sound_set_position("cow_idle", cowPos.x, cowPos.y, cowPos.z)
+            fe3d:sound_play("cow_idle", 0, 0)
+ELSE:
+    IF isCowPlaying IS <true>:
+        fe3d:sound_stop("cow_idle", 0)
+
+/// Pig sounds
+BOOL isPigPlaying = fe3d:sound_is_playing("pig_idle")
+IF pigCount MORE 0:
+    INT randomPigNumber = misc:get_random_integer(0, _animalSoundChance)
+    IF randomPigNumber IS 0:
+        IF isPigPlaying IS <false>:
+            VEC3 pigPos = fe3d:model_get_position(pigs[0])
+            fe3d:sound_set_position("pig_idle", pigPos.x, pigPos.y, pigPos.z)
+            fe3d:sound_play("pig_idle", 0, 0)
+ELSE:
+    IF isPigPlaying IS <true>:
+        fe3d:sound_stop("pig_idle", 0)
+
+/// Sheep sounds
+BOOL isSheepPlaying = fe3d:sound_is_playing("sheep_idle")
+IF sheepCount MORE 0:
+    INT randomSheepNumber = misc:get_random_integer(0, _animalSoundChance)
+    IF randomSheepNumber IS 0:
+        IF isSheepPlaying IS <false>:
+            VEC3 sheepPos = fe3d:model_get_position(sheeps[0])
+            fe3d:sound_set_position("sheep_idle", sheepPos.x, sheepPos.y, sheepPos.z)
+            fe3d:sound_play("sheep_idle", 0, 0)
+ELSE:
+    IF isSheepPlaying IS <true>:
+        fe3d:sound_stop("sheep_idle", 0)
+
+/// Chicken sounds
+BOOL isChickenPlaying = fe3d:sound_is_playing("chicken_idle")
+IF chickenCount MORE 0:
+    INT randomChickenNumber = misc:get_random_integer(0, _animalSoundChance)
+    IF randomChickenNumber IS 0:
+        IF isChickenPlaying IS <false>:
+            VEC3 chickPos = fe3d:model_get_position(chickens[0])
+            fe3d:sound_set_position("chicken_idle", chickPos.x, chickPos.y, chickPos.z)
+            fe3d:sound_play("chicken_idle", 0, 0)
+ELSE:
+    IF isChickenPlaying IS <true>:
+        fe3d:sound_stop("chicken_idle", 0)
