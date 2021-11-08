@@ -1,0 +1,29 @@
+12 41
+META script_type_update
+META script_execution_waiting
+
+/// Globals
+GLOB CONST DEC _waterSpeedX = fe3d:water_get_speed_x()
+GLOB CONST DEC _waterSpeedZ = fe3d:water_get_speed_z()
+GLOB CONST DEC _wetLensSpeed = 0.002
+GLOB CONST DEC _underwaterFogMinDistance = 5.0
+GLOB CONST DEC _underwaterFogMaxDistance = 15.0
+GLOB CONST DEC _underwaterFogThickness = 1.0
+GLOB CONST DEC _initialFogMinDistance = 25.0
+GLOB CONST DEC _initialFogMaxDistance = 150.0
+GLOB CONST DEC _initialFogThickness = 1.0
+GLOB BOOL _isUnderwater = <false>
+GLOB BOOL _wasUnderWater = <false>
+GLOB DEC _wetLensAlpha = 0.0
+
+/// Textures
+fe3d:image_place("underwater", "underwater.png", 0.0, 0.0, 0.0, 3.0, 3.0)
+fe3d:image_place("wetLens", "wetLens.png", 0.0, 0.0, 0.0, 2.0, 2.0)
+fe3d:image_set_alpha("underwater", 0.7)
+fe3d:image_set_alpha("wetLens", 0.0)
+fe3d:image_set_visible("underwater", <false>)
+
+/// Sounds
+fe3d:sound_place2D("splash", "splash", 0.75)
+fe3d:sound_place2D("underwater", "underwater", 1.0)
+fe3d:sound_place2D("emerge", "emerge", 0.75)

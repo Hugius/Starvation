@@ -1,0 +1,98 @@
+11 23
+META script_type_update
+META script_execution_waiting
+
+/// Values
+BOOL ePressed = fe3d:input_is_key_pressed("KEY_E")
+BOOL isBuilt = <false>
+
+/// Update food display
+BOOL isExisting = fe3d:model_is_existing("bread:table")
+IF isExisting IS <true>:
+    BOOL breadVisible = (_bag[6] MORE 0)
+    BOOL fishVisible = (_bag[7] MORE 0)
+    BOOL meatVisible = (_bag[8] MORE 0)
+    fe3d:model_set_visible("bread:table", breadVisible)
+    fe3d:model_set_visible("fish:table", fishVisible)
+    fe3d:model_set_visible("meat:table", meatVisible)
+
+/// Update eating
+fe3d:text_set_visible("eat", <false>)
+LIST foods = {"bread:table", "fish:table", "meat:table"}
+STR hoveredID = ""
+INT index = 0
+INT maxIndex = misc:get_list_size("foods")
+LOOP:
+    IF index IS maxIndex OR isExisting IS <false>:
+        BREAK
+    ELSE:
+        EDIT hoveredID = fe3d:raycast_into_model(foods[index], "", <true>)
+        IF hoveredID NOT "" AND _isBuilding IS <false>:
+            DEC fDistance = fe3d:raycast_into_model_distance(foods[index], "", <true>)
+            IF fDistance IS -1.0:
+                EDIT fDistance = 1000.0
+            DEC maxHunger = 1.0
+            IF index IS 0:
+                DECR maxHunger _hungerBreadFactor
+            ELIF index IS 1:
+                DECR maxHunger _hungerFishFactor
+            ELIF index IS 2:
+                DECR maxHunger _hungerMeatFactor
+            IF fDistance LESS _useReach AND _hunger LESS maxHunger:
+                fe3d:text_set_visible("eat", <true>)
+                IF ePressed IS <true>:
+                    IF index IS 0:
+                        DECR _bag[6] 1
+                        INCR _hunger _hungerBreadFactor
+                    ELIF index IS 1:
+                        DECR _bag[7] 1
+                        INCR _hunger _hungerFishFactor
+                    ELIF index IS 2:
+                        DECR _bag[8] 1
+                        INCR _hunger _hungerMeatFactor
+                    fe3d:sound_play("eat", 0, 0)
+        INCR index 1
+
+/// Update drinking
+fe3d:text_set_visible("drink", <false>)
+EDIT hoveredID = fe3d:raycast_into_model("well", "", <true>)
+IF hoveredID NOT "" AND _isBuilding IS <false>:
+    DEC wellHeight = fe3d:model_get_max_height(hoveredID)
+    VEC3 wellSize = fe3d:aabb_get_size("well_display@well")
+    DEC wellDistance = fe3d:raycast_into_model_distance("well", "", <true>)
+    IF wellDistance IS -1.0:
+        EDIT wellDistance = 1000.0
+    EDIT isBuilt = (wellHeight IS wellSize.y OR wellHeight MORE wellSize.y)
+    DEC maxThirst = 1.0
+    DECR maxThirst _thirstDrinkFactor
+    IF wellDistance LESS _useReach AND isBuilt IS <true> AND _thirst LESS maxThirst:
+        fe3d:text_set_visible("drink", <true>)
+        IF ePressed IS <true>:
+            INCR _thirst _thirstDrinkFactor
+            fe3d:sound_play("drink", 0, 0)
+
+/// Update washing
+VEC3 camPos = fe3d:camera_get_position()
+DEC waterY = fe3d:water_get_height()
+IF camPos.y LESS waterY:
+    INCR _hygiene _hygieneWashFactor
+
+/// Update fire damage
+STR campfireID = fe3d:collision_check_camera_model("campfire", "logs", "")
+IF campfireID NOT "" AND _isDaytime IS <true>:
+    DEC cfHeight = fe3d:model_get_max_height(campfireID)
+    VEC3 cfSize = fe3d:aabb_get_size("campfire_display@logs")
+    EDIT isBuilt = (cfHeight IS cfSize.y OR cfHeight MORE cfSize.y)
+    IF _isOnFire IS <false> AND isBuilt IS <true>:
+        fe3d:image_start_animation("fire", 4, 8, 3, -1)
+        fe3d:image_set_visible("fire", <true>)
+        fe3d:sound_play("fire", -1, 0)
+    EDIT _isOnFire = <true>
+ELIF camPos.y LESS waterY:
+    IF _isOnFire IS <true>:
+        EDIT _isOnFire = <false>
+        fe3d:image_stop_animation("fire")
+        fe3d:image_set_visible("fire", <false>)
+        fe3d:sound_stop("fire", 0)
+IF _isOnFire IS <true>:
+    DECR _health _healthFireFactor

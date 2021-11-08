@@ -1,0 +1,59 @@
+27 0
+META script_type_destroy
+META script_execution_waiting
+
+/// Status
+VEC3 camPos = fe3d:camera_get_position()
+INCR camPos.y 1.0
+DEC camYaw = fe3d:camera_get_yaw()
+DEC camPitch = fe3d:camera_get_pitch()
+fe3d:file_write("player.txt", camPos)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", camYaw)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", camPitch)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _health)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _hunger)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _thirst)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _hygiene)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _oxygen)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _temperature)
+fe3d:file_add_new_line("player.txt")
+fe3d:file_write("player.txt", _stamina)
+
+/// Inventory
+INT length = misc:get_list_size("_inventory")
+INT maxIndex = length
+MUL maxIndex 2
+INT index = 0
+LOOP:
+    IF index IS maxIndex:
+        BREAK
+    ELSE:
+        IF index IS length OR index MORE length:
+            DECR index length
+            fe3d:file_write("inventory.txt", _durabilities[index])
+            INCR index length
+        ELSE:
+            fe3d:file_write("inventory.txt", _inventory[index])
+        fe3d:file_add_new_line("inventory.txt")
+        INCR index 1
+fe3d:file_write("inventory.txt", _equipIndex)
+
+/// Bag
+EDIT maxIndex = misc:get_list_size("_bag")
+EDIT index = 0
+LOOP:
+    IF index IS maxIndex:
+        BREAK
+    ELSE:
+        fe3d:file_write("bag.txt", _bag[index])
+        INCR index 1
+        IF index NOT maxIndex:
+            fe3d:file_add_new_line("bag.txt")

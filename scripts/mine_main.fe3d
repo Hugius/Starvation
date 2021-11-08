@@ -1,0 +1,91 @@
+77 52
+META script_type_update
+META script_execution_waiting
+
+/// Values
+STR toolID = _inventory[_equipIndex]
+BOOL isStoneHovered = <false>
+BOOL isIronHovered = <false>
+
+/// Update stone hover
+fe3d:text_set_visible("mine", <false>)
+STR stonesException = fe3d:raycast_into_model("stones", "", <true>)
+STR hoveredID = fe3d:raycast_into_model("stone", "", <true>)
+IF hoveredID NOT "" AND stonesException IS "":
+    DEC stoneDistance = fe3d:raycast_into_model_distance("stone", "", <true>)
+    IF stoneDistance IS -1.0:
+        EDIT stoneDistance = 1000.0
+    IF stoneDistance LESS _toolReach:
+        EDIT isStoneHovered = <true>
+        IF toolID IS "pickaxe_stone" OR toolID IS "pickaxe_iron":
+            IF _isInvOpen IS <true>:
+                fe3d:text_set_visible("mine", <true>)
+
+/// Update stone mining
+IF _wasPickaxePlaying IS <true> AND _isPickaxePlaying IS <false>:
+    IF isStoneHovered IS <true>:
+        VEC3 stonePos = fe3d:model_get_position(hoveredID)
+        fe3d:model_delete(hoveredID)
+        CAST _idCounter STR
+        STR stonesID = misc:concat_strings("stones", _idCounter)
+        CAST _idCounter INT
+        INCR _idCounter 1
+        EDIT _fallingStonesID = stonesID
+        EDIT _fallingStonesTargetHeight = stonePos.y
+        INCR stonePos.y _stonesFallHeight
+        fe3d:model_place(stonesID, "stones", stonePos.x, stonePos.y, stonePos.z)
+        DECR _durabilities[1] _durabilityHit
+        fe3d:sound_set_position("stone", stonePos.x, stonePos.y, stonePos.z)
+        fe3d:sound_play_forced("stone", 0, 0)
+
+/// Update stone falling
+IF _fallingStonesID NOT "":
+    VEC3 currentPos = fe3d:model_get_position(_fallingStonesID)
+    IF currentPos.y MORE _fallingStonesTargetHeight:
+        fe3d:model_move(_fallingStonesID, 0.0, -0.1, 0.0)
+    ELSE:
+        EDIT _fallingStonesID = ""
+
+/// Update stone picking
+EDIT hoveredID = fe3d:raycast_into_model("stones", "", <true>)
+IF hoveredID NOT "" AND _wasPickupPlaying IS <true> AND _isPickupPlaying IS <false>:
+    DEC stonesDistance = fe3d:raycast_into_model_distance("stones", "", <true>)
+    IF stonesDistance IS -1.0:
+        EDIT stonesDistance = 1000.0
+    IF stonesDistance LESS _pickupReach:
+        fe3d:model_delete(hoveredID)
+        INCR _bag[1] _stoneCount
+        fe3d:sound_play("bag", 0, 0)
+
+/// Update iron hover
+EDIT isIronHovered = <false>
+EDIT toolID = _inventory[_equipIndex]
+EDIT hoveredID = fe3d:raycast_into_model("ore", "", <true>)
+IF hoveredID NOT "":
+    DEC ironDistance = fe3d:raycast_into_model_distance("ore", "", <true>)
+    IF ironDistance IS -1.0:
+        EDIT ironDistance = 1000.0
+    /// Check if able to reach
+    IF ironDistance LESS _toolReach:
+        EDIT isIronHovered = <true>
+        IF toolID IS "pickaxe_stone" OR toolID IS "pickaxe_iron":
+            IF _isInvOpen IS <true>:
+                fe3d:text_set_visible("mine", <true>)
+
+/// Update iron mining
+IF _wasPickaxePlaying IS <true> AND _isPickaxePlaying IS <false>:
+    IF isIronHovered IS <true>:
+        DECR _durabilities[1] _durabilityHit
+        INT randomNumber = misc:get_random_integer(0, _ironChance)
+        IF randomNumber IS 0:
+            INCR _bag[9] 1
+            fe3d:sound_play("bag", 0, 0)
+
+/// Update pickaxe sound
+BOOL isSoundPlaying = fe3d:sound_is_playing("pickaxe")
+IF isStoneHovered IS <true> OR isIronHovered IS <true>:
+    IF _isPickaxePlaying IS <true> AND isSoundPlaying IS <false>:
+        STR animationID = "pickaxe_mine"
+        INT frameIndex = fe3d:model_get_animation_frame_index(toolID, animationID)
+        IF frameIndex IS 2:
+            fe3d:sound_play("pickaxe", 0, 0)

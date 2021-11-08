@@ -1,0 +1,26 @@
+5 3
+META script_type_update
+META script_execution_waiting
+
+/// Values
+STR toolID = _inventory[_equipIndex]
+STR hoveredID = fe3d:collision_check_camera_model("claypile", "", "Y")
+
+/// Update clay digging
+fe3d:text_set_visible("dig", <false>)
+IF hoveredID NOT "" AND _isInvOpen IS <true>:
+    IF toolID IS "shovel_stone" OR toolID IS "shovel_iron":
+        fe3d:text_set_visible("dig", <true>)
+        IF _wasShovelPlaying IS <true> AND _isShovelPlaying IS <false>:
+            INCR _bag[2] _clayCount
+            DECR _durabilities[3] _durabilityHit
+            fe3d:model_delete(hoveredID)
+            fe3d:sound_play("bag", 0, 0)
+
+/// Update shovel sound
+BOOL isSoundPlaying = fe3d:sound_is_playing("shovel")
+BOOL isAllowed = fe3d:text_is_visible("dig")
+IF isAllowed IS <true> AND _isShovelPlaying IS <true> AND isSoundPlaying IS <false>:
+    INT frameIndex = fe3d:model_get_animation_frame_index(toolID, "shovel_dig")
+    IF frameIndex IS 1:
+        fe3d:sound_play("shovel", 0, 0)

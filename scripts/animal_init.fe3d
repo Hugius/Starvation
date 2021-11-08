@@ -1,0 +1,33 @@
+18 45
+META script_type_update
+META script_execution_waiting
+
+/// Extract defaul animal sizes
+fe3d:model_place("cow", "cow", 0.0, 0.0, 0.0)
+fe3d:model_place("pig", "pig", 0.0, 0.0, 0.0)
+fe3d:model_place("sheep", "sheep", 0.0, 0.0, 0.0)
+fe3d:model_place("chicken", "chicken", 0.0, 0.0, 0.0)
+GLOB CONST VEC3 _cowSize = fe3d:model_get_size("cow")
+GLOB CONST VEC3 _pigSize = fe3d:model_get_size("pig")
+GLOB CONST VEC3 _sheepSize = fe3d:model_get_size("sheep")
+GLOB CONST VEC3 _chickenSize = fe3d:model_get_size("chicken")
+fe3d:model_delete("cow")
+fe3d:model_delete("pig")
+fe3d:model_delete("sheep")
+fe3d:model_delete("chicken")
+
+/// Globals
+GLOB CONST DEC _animalGrowthFactor = 0.000001
+GLOB CONST DEC _initialAnimalGrowth = 0.5
+GLOB CONST INT _animalSoundChance = 1000
+GLOB DEC _animalGrowth = _initialAnimalGrowth
+
+/// Sounds
+fe3d:sound_place3D("cow_idle", "cow_idle", 0.0, 0.0, 0.0, 1.0, 35.0)
+fe3d:sound_place3D("cow_death", "cow_death", 0.0, 0.0, 0.0, 1.0, 35.0)
+fe3d:sound_place3D("pig_idle", "pig_idle", 0.0, 0.0, 0.0, 0.75, 35.0)
+fe3d:sound_place3D("pig_death", "pig_death", 0.0, 0.0, 0.0, 1.0, 35.0)
+fe3d:sound_place3D("sheep_idle", "sheep_idle", 0.0, 0.0, 0.0, 0.75, 35.0)
+fe3d:sound_place3D("sheep_death", "sheep_death", 0.0, 0.0, 0.0, 1.0, 35.0)
+fe3d:sound_place3D("chicken_idle", "chicken_idle", 0.0, 0.0, 0.0, 0.75, 35.0)
+fe3d:sound_place3D("chicken_death", "chicken_death", 0.0, 0.0, 0.0, 1.0, 35.0)

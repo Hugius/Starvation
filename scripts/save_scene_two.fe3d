@@ -1,0 +1,76 @@
+40 48
+META script_type_destroy
+META script_execution_waiting
+
+/// Add billboards
+LIST billboards = {}
+LIST fires = fe3d:billboard_find_ids("fire")
+LIST flames = fe3d:billboard_find_ids("flame")
+LIST smokes = fe3d:billboard_find_ids("smoke")
+EDIT billboards = misc:concat_lists("billboards", "fires")
+EDIT billboards = misc:concat_lists("billboards", "flames")
+EDIT billboards = misc:concat_lists("billboards", "smokes")
+INT length = misc:get_list_size("billboards")
+INT index = 0
+LOOP:
+    IF index IS length:
+        BREAK
+    ELSE:
+        fe3d:scene_add_custom_billboard(billboards[index])
+        INCR index 1
+
+/// Add lights
+LIST lights = {}
+LIST campfires = fe3d:light_find_ids("campfire")
+LIST smelters = fe3d:light_find_ids("smelter")
+LIST ovens = fe3d:light_find_ids("oven")
+EDIT lights = misc:concat_lists("lights", "campfires")
+EDIT lights = misc:concat_lists("lights", "smelters")
+EDIT lights = misc:concat_lists("lights", "ovens")
+EDIT length = misc:get_list_size("lights")
+EDIT index = 0
+LOOP:
+    IF index IS length:
+        BREAK
+    ELSE:
+        fe3d:scene_add_custom_light(lights[index])
+        INCR index 1
+
+/// Add sounds
+LIST sounds = {}
+LIST waters = fe3d:sound_find_ids("water")
+EDIT campfires = fe3d:sound_find_ids("campfire")
+EDIT smelters = fe3d:sound_find_ids("smelter")
+EDIT ovens = fe3d:sound_find_ids("oven")
+LIST mills = fe3d:sound_find_ids("mill")
+EDIT sounds = misc:concat_lists("sounds", "waters")
+EDIT sounds = misc:concat_lists("sounds", "campfires")
+EDIT sounds = misc:concat_lists("sounds", "smelters")
+EDIT sounds = misc:concat_lists("sounds", "ovens")
+EDIT sounds = misc:concat_lists("sounds", "mills")
+EDIT length = misc:get_list_size("sounds")
+EDIT index = 0
+LOOP:
+    IF index IS length:
+        BREAK
+    ELSE:
+        fe3d:scene_add_custom_sound(sounds[index])
+        INCR index 1
+
+/// Add environment
+fe3d:scene_add_custom_sky()
+fe3d:scene_add_custom_terrain()
+fe3d:scene_add_custom_water()
+
+/// Graphics
+fe3d:scene_add_custom_lighting()
+fe3d:graphics_enable_fog()
+fe3d:graphics_enable_sky_hdr()
+fe3d:graphics_enable_shadows()
+fe3d:graphics_enable_dof()
+fe3d:graphics_enable_motion_blur()
+fe3d:graphics_enable_lens_flare()
+fe3d:scene_add_custom_graphics()
+
+/// Save scene
+fe3d:scene_save_custom()

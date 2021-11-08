@@ -1,0 +1,90 @@
+87 13
+META script_type_update
+META script_execution_waiting
+
+/// Storage
+LIST lines = fe3d:file_read("storage.txt")
+STR line = ""
+INT maxIndex = misc:get_list_size("_storage")
+INT index = 0
+LOOP:
+    IF index IS maxIndex:
+        BREAK
+    ELSE:
+        EDIT line = lines[index]
+        CAST line INT
+        EDIT _storage[index] = line
+        CAST line STR
+        INCR index 1
+
+/// Building counters
+EDIT lines = fe3d:file_read("buildings.txt")
+EDIT maxIndex = misc:get_list_size("_buildCounters")
+EDIT index = 0
+LOOP:
+    IF index IS maxIndex:
+        BREAK
+    ELSE:
+        EDIT line = lines[index]
+        CAST line INT
+        EDIT _buildCounters[index] = line
+        CAST line STR
+        INCR index 1
+
+/// Survival time
+EDIT lines = fe3d:file_read("miscellaneous.txt")
+EDIT line = lines[0]
+CAST line DEC
+EDIT _elapsedMS = line
+CAST line STR
+
+/// Resources
+EDIT _fallingTreeID = lines[1]
+EDIT _dyingAnimalID = lines[2]
+EDIT _dyingAnimalType = lines[3]
+EDIT _fallingLogID = lines[4]
+EDIT _fallingStonesID = lines[5]
+EDIT _fallingMeatID = lines[6]
+EDIT line = lines[7]
+CAST line DEC
+EDIT _fallingLogTargetHeight = line
+CAST line STR
+EDIT line = lines[8]
+CAST line DEC
+EDIT _fallingStonesTargetHeight = line
+CAST line STR
+EDIT line = lines[9]
+CAST line DEC
+EDIT _fallingMeatTargetHeight = line
+CAST line STR
+
+/// Time
+EDIT line = lines[10]
+CAST line DEC
+EDIT _skyMixValue = line
+CAST line STR
+EDIT line = lines[11]
+CAST line DEC
+EDIT _passedTime = line
+CAST line STR
+EDIT line = lines[12]
+CAST line BOOL
+EDIT _mustBeDayTime = line
+CAST line STR
+EDIT line = lines[13]
+CAST line BOOL
+EDIT _isDaytime = line
+IF _isDaytime IS <false>:
+    fe3d:graphics_set_lens_flare_map("lens_dirt.png")
+CAST line STR
+EDIT line = lines[14]
+CAST line BOOL
+EDIT _isTimeCycling = line
+CAST line STR
+EDIT line = lines[15]
+CAST line INT
+EDIT _idCounter = line
+CAST line STR
+EDIT line = lines[16]
+CAST line DEC
+EDIT _animalGrowth = line

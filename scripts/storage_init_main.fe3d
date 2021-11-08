@@ -1,0 +1,48 @@
+43 27
+META script_type_update
+META script_execution_waiting
+
+/// Globals
+GLOB CONST VEC3 _storageButtonColor = [0.0 0.5 0.0]
+GLOB LIST _storage = {0,0,0,0,0,0,0,0,0,0,0}
+GLOB LIST _storageTextIDs = {}
+GLOB LIST _storageButtonIDs = {}
+GLOB BOOL _isInStorage = <false>
+GLOB BOOL _wasInStorage = <false>
+
+/// Text IDs
+PUSH _storageTextIDs "wood_count_storage"
+PUSH _storageTextIDs "stone_count_storage"
+PUSH _storageTextIDs "clay_count_storage"
+PUSH _storageTextIDs "seeds_count_storage"
+PUSH _storageTextIDs "wheat_count_storage"
+PUSH _storageTextIDs "flour_count_storage"
+PUSH _storageTextIDs "bread_count_storage"
+PUSH _storageTextIDs "fish_count_storage"
+PUSH _storageTextIDs "meat_count_storage"
+PUSH _storageTextIDs "ore_count_storage"
+PUSH _storageTextIDs "ingot_count_storage"
+
+/// Button IDs
+PUSH _storageButtonIDs "wood_plus_storage"
+PUSH _storageButtonIDs "wood_minus_storage"
+PUSH _storageButtonIDs "stone_plus_storage"
+PUSH _storageButtonIDs "stone_minus_storage"
+PUSH _storageButtonIDs "clay_plus_storage"
+PUSH _storageButtonIDs "clay_minus_storage"
+PUSH _storageButtonIDs "seeds_plus_storage"
+PUSH _storageButtonIDs "seeds_minus_storage"
+PUSH _storageButtonIDs "wheat_plus_storage"
+PUSH _storageButtonIDs "wheat_minus_storage"
+PUSH _storageButtonIDs "flour_plus_storage"
+PUSH _storageButtonIDs "flour_minus_storage"
+PUSH _storageButtonIDs "bread_plus_storage"
+PUSH _storageButtonIDs "bread_minus_storage"
+PUSH _storageButtonIDs "fish_plus_storage"
+PUSH _storageButtonIDs "fish_minus_storage"
+PUSH _storageButtonIDs "meat_plus_storage"
+PUSH _storageButtonIDs "meat_minus_storage"
+PUSH _storageButtonIDs "ore_plus_storage"
+PUSH _storageButtonIDs "ore_minus_storage"
+PUSH _storageButtonIDs "ingot_plus_storage"
+PUSH _storageButtonIDs "ingot_minus_storage"
